@@ -218,9 +218,11 @@ describe('formDataToJSON', () => {
     const formData = new FormData();
 
     // `length` is an own property of the intermediate arrays the parser
-    // builds, so a field named `length` previously hit RangeError.
-    formData.append('metadata[length]', 'long');
+    // builds, so a field named `length` previously hit RangeError. The
+    // numeric entry is written first so a regression that drops existing
+    // array entries fails here.
     formData.append('metadata[0]', 'a');
+    formData.append('metadata[length]', 'long');
     formData.append('size[length][unit]', 'cm');
     formData.append('dims.length', 'w');
 
